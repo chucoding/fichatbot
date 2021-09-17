@@ -11,3 +11,10 @@ Fall In Chatbot(챗봇에 빠지다) 1기 교육자료 입니다.
 ## 목표
     1. 🏅 2021년도 한신대학교 27회 소프트웨어 공모전 참여 🏅
     2. 🏅 ETRI Open API 활용사례 공모전 참여 🏅
+
+## 개발환경 구성
+    Spring Framework : 5.2.2.RELEASE
+    java : 1.8
+    node : v14.17.6
+    npm : v6.14.15
+    tomcat : 8.5
