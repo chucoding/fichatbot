@@ -15,10 +15,10 @@ const Messenger = () => {
     const getAnswer = (message) => {
         setMessages([...messages, message]); //질문
         const url = `http://localhost:8080/fichatbot/chat`;
-        fetch(url, {method:"POST", body: JSON.stringify({data:messages})})
+        fetch(url, {method:"POST", headers:{"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"} })
             .then((res) => res.json())
             .then((data) => {
-                setMessages([...messages, data]); //답변
+                setMessages(messages => [...messages, data]); //답변
             }).catch(() => {
                 console.log("에러발생");
             });
