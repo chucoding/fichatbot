@@ -1,4 +1,4 @@
-package com.chucoding.fichatbot;
+package com.chucoding.fichatbot.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
