@@ -15,7 +15,6 @@ import com.chucoding.fichatbot.service.ChatService;
 @RestController
 public class ChatController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 	@Autowired ChatService chatService;	
 		
 	@CrossOrigin("*")

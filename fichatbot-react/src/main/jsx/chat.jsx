@@ -3,12 +3,16 @@ import Chat from 'react-simple-chat';
 import 'react-simple-chat/src/components/index.css';
 
 const Messenger = () => {
-    const [messages, setMessages] = useState([]);
 
+    //변수 선언
+    const [messages, setMessages] = useState([]);
+    const [uuid, setUuid] = useState("");
+
+    //함수 선언
     const getAnswer = (message) => {
         setMessages([...messages, message]); //질문
         const url = `http://localhost:8080/fichatbot/chat/message`;
-        fetch(url, {method:"POST", body: JSON.stringify({data:message}), headers:{"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"} })
+        fetch(url, {method:"POST", body: JSON.stringify({question:message, uuid:uuid}), headers:{"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"} })
             .then((res) => res.json())
             .then((data) => {
                 setMessages(messages => [...messages, data]); //답변
@@ -22,6 +26,8 @@ const Messenger = () => {
         fetch(url, {method:"POST", headers:{"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"}})
             .then((res) => res.json())
             .then((data) => {
+                console.log(data.uuid);
+                setUuid(data.uuid);
                 setMessages(messages => [...messages, data]);
             }).catch(()=>{
                 console.log("에러발생");
