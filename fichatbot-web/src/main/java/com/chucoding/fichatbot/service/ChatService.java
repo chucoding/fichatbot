@@ -36,7 +36,7 @@ public class ChatService {
 			
 			res.put("id", "chatbot");
 			res.put("uuid",uuid);
-			res.put("text", text);
+			res.put("text", "매장 ID를 입력하세요");
 			res.put("createdAt", new Date());
 			res.put("user", submap);
 			
@@ -47,7 +47,6 @@ public class ChatService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		return res;
 	}
 
@@ -58,6 +57,11 @@ public class ChatService {
 		Map<String, String> req = new HashMap<String, String>();
 		req.put("text", (String) question.get("text"));
 		req.put("uuid", (String) data.get("uuid"));
+		
+		/*
+		storeDao.getStoreInfo(data.get("id"));
+		'where id='data.get("id")
+		*/
 		
 		String json = chatDao.message(req);
 		ObjectMapper mapper = new ObjectMapper();

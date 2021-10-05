@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import Chat from 'react-simple-chat';
 import 'react-simple-chat/src/components/index.css';
 
-const Messenger = () => {
+const Messenger = ({ location }) => {
 
     //변수 선언
     const [messages, setMessages] = useState([]);
     const [uuid, setUuid] = useState("");
+    const [storeNum, setStoreNum] = useState(location.props && location.props.num);
 
     //함수 선언
     const getAnswer = (message) => {
@@ -23,7 +24,7 @@ const Messenger = () => {
 
     const openChat = () => {
         const url = `http://localhost:8080/fichatbot/chat/open`;
-        fetch(url, {method:"POST", headers:{"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"}})
+        fetch(url, {method:"POST", body: JSON.stringify({storeNum:storeNum}), headers:{"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"}})
             .then((res) => res.json())
             .then((data) => {
                 console.log(data.uuid);

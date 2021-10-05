@@ -19,7 +19,8 @@ public class ChatController {
 		
 	@CrossOrigin("*")
 	@PostMapping(value = "/chat/open")
-	public Map open() {
+	public Map open(@RequestBody Map<String, Object> data) {
+		System.out.println(data);
 		return chatService.open();
 	}
 	
