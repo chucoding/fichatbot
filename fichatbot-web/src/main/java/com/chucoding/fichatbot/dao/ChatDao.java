@@ -1,6 +1,8 @@
 package com.chucoding.fichatbot.dao;
 
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -8,12 +10,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 
 public class ChatDao {
 
 	private static final String ACCESS_KEY = "417ac904-4b08-4ba6-9f5e-ea214b0994ad";
+	private static final String KAKAO_ACCESS_KEY = "4342a446786a28fd0b97b08407212f31";
 	
 	public String open() {
 		String openApiURL = "http://aiopen.etri.re.kr:8000/Dialog";
@@ -123,4 +127,65 @@ public class ChatDao {
 		
 		return responBody;
 	}
+
+
+	public String tts(String folderpath, String text) {
+		
+		String openApiURL = "https://kakaoi-newtone-openapi.kakao.com/v1/synthesize";
+		String body = String.format("<speak><voice name=\"%s\">%s</voice></speak>", "MAN_DIALOG_BRIGHT", "테스트");
+		
+        URL url;
+        Integer responseCode = null;
+        String responBody = null;
+        String filename = "";
+        UUID uuid = UUID.randomUUID();
+        try {
+            url = new URL(openApiURL);
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("POST");
+            con.setDoOutput(true);
+            con.setRequestProperty("Content-Type", "application/xml");
+            con.setRequestProperty("Authorization", String.format("KakaoAK %s", KAKAO_ACCESS_KEY));
+            
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.write(body.getBytes("UTF-8"));
+            wr.flush();
+            wr.close();
+            
+            responseCode = con.getResponseCode();
+            
+            File folder = new File(folderpath);
+			if (folder.exists() == false) {
+				folder.mkdirs();
+			}
+            
+            
+            filename = uuid.toString() + ".mp3";
+            File file = new File(folderpath+ File.separator + filename);
+            copyInputStreamToFile(con.getInputStream(), file);
+            
+            
+        } catch (MalformedURLException e) {
+                e.printStackTrace();
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
+        
+		return filename;
+	}
+	
+	 @SuppressWarnings("unused")
+	private static void copyInputStreamToFile(InputStream inputStream, File file)
+	            throws IOException {
+
+	        // append = false
+	        try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
+	            int read;
+	            byte[] bytes = new byte[8192];
+	            while ((read = inputStream.read(bytes)) != -1) {
+	                outputStream.write(bytes, 0, read);
+	            }
+	        }
+
+	    }
 }

@@ -21,6 +21,7 @@ const VChat = ({ location }) => {
     const [uuid, setUuid] = useState("");
     const [storeNum, setStoreNum] = useState(location.props && location.props.num);
     const [question, setQuestion] = useState("");
+    const [speech, setSpeech] = useState("");
 
     //함수 선언
 	const _onVocalStart = () => {
@@ -30,6 +31,13 @@ const VChat = ({ location }) => {
 	const _onVocalResult = (result) => {
 		setQuestion(result)
 	}
+
+    const tts = (url) => {
+        var audio = document.createElement("Audio");
+        audio.src = "http://localhost:8080/fichatbot/resources/tts/"+url; 
+        //window.URL.createObjectURL(stream);
+        audio.play();
+    }
 
     const getAnswer = () => {
 
@@ -46,6 +54,7 @@ const VChat = ({ location }) => {
             .then((res) => res.json())
             .then((data) => {
                 setMessages(messages => [...messages, data]); //답변
+                tts(data.ttsUrl);
             }).catch(() => {
                 console.log("에러발생");
             });
@@ -65,6 +74,7 @@ const VChat = ({ location }) => {
     };
 
     useEffect(openChat,[]);
+    useEffect(tts, [speech])
 
     return (
         <div>
