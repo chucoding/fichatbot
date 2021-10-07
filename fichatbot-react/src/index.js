@@ -8,6 +8,7 @@ const App = () => {
   const Main = lazy(() => import( './main/jsx/main'));
   const Chat = lazy(() => import( './main/jsx/chat'));
   const VChat = lazy(() => import( './main/jsx/vchat'));
+  const XChat = lazy(() => import( './main/jsx/xchat'));
 
   return (
     <Router>
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/" exact component={Main}/>
           <Route path="/chat" exact component={Chat}/>
           <Route path="/vchat" exact component={VChat}/>
+          <Route path="/xchat" exact component={XChat}/>
         </Switch>
       </Suspense>
     </Router>

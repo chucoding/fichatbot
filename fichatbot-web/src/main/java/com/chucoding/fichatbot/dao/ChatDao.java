@@ -132,60 +132,59 @@ public class ChatDao {
 	public String tts(String folderpath, String text) {
 		
 		String openApiURL = "https://kakaoi-newtone-openapi.kakao.com/v1/synthesize";
-		String body = String.format("<speak><voice name=\"%s\">%s</voice></speak>", "MAN_DIALOG_BRIGHT", "테스트");
+		String REST_API_KEY = "4342a446786a28fd0b97b08407212f31";
+		String data = "<speak> 그는 그렇게 말했습니다. \r\n"
+				+ "<voice name=\"MAN_DIALOG_BRIGHT\">잘 지냈어? 나도 잘 지냈어.</voice> \r\n"
+				+ "<voice name=\"WOMAN_DIALOG_BRIGHT\" speechStyle=\"SS_ALT_FAST_1\">금요일이 좋아요.</voice> </speak>";
 		
         URL url;
         Integer responseCode = null;
         String responBody = null;
         String filename = "";
         UUID uuid = UUID.randomUUID();
+        
         try {
-            url = new URL(openApiURL);
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
-            con.setRequestMethod("POST");
-            con.setDoOutput(true);
-            con.setRequestProperty("Content-Type", "application/xml");
-            con.setRequestProperty("Authorization", String.format("KakaoAK %s", KAKAO_ACCESS_KEY));
-            
-            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            wr.write(body.getBytes("UTF-8"));
-            wr.flush();
-            wr.close();
-            
-            responseCode = con.getResponseCode();
-            
-            File folder = new File(folderpath);
-			if (folder.exists() == false) {
-				folder.mkdirs();
-			}
-            
-            
-            filename = uuid.toString() + ".mp3";
-            File file = new File(folderpath+ File.separator + filename);
-            copyInputStreamToFile(con.getInputStream(), file);
-            
-            
+                url = new URL(openApiURL);
+                HttpURLConnection con = (HttpURLConnection)url.openConnection();
+                con.setRequestProperty("Content-Type", "application/xml");
+                con.setRequestProperty("Authorization", String.format("KakaoAK %s",REST_API_KEY));
+                con.setRequestMethod("POST");
+                con.setDoOutput(true);
+ 
+                DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+                wr.write(data.getBytes("UTF-8"));
+                wr.flush();
+                wr.close();
+ 
+                responseCode = con.getResponseCode();
+
+                File folder = new File(folderpath);
+    			if (folder.exists() == false) {
+    				folder.mkdirs();
+    			}
+                
+                filename = uuid.toString() + ".mp3";
+                File file = new File(folderpath+ File.separator + filename);
+                copyInputStreamToFile(con.getInputStream(), file);
+                
         } catch (MalformedURLException e) {
                 e.printStackTrace();
         } catch (IOException e) {
                 e.printStackTrace();
         }
-        
+		
 		return filename;
 	}
 	
-	 @SuppressWarnings("unused")
 	private static void copyInputStreamToFile(InputStream inputStream, File file)
-	            throws IOException {
-
-	        // append = false
-	        try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
-	            int read;
-	            byte[] bytes = new byte[8192];
-	            while ((read = inputStream.read(bytes)) != -1) {
-	                outputStream.write(bytes, 0, read);
-	            }
-	        }
-
-	    }
+            throws IOException {
+        // append = false
+        try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
+            int read;
+            byte[] bytes = new byte[8192];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+        }
+    }
 }

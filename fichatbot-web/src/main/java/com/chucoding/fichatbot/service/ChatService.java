@@ -2,7 +2,6 @@ package com.chucoding.fichatbot.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +39,7 @@ public class ChatService {
 			
 			res.put("id", "chatbot");
 			res.put("uuid",uuid);
-			res.put("text", "매장 ID를 입력하세요");
+			res.put("text",text);
 			res.put("createdAt", new Date());
 			res.put("user", submap);
 			

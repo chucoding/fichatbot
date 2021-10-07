@@ -22,15 +22,17 @@ public class ChatController {
 	@CrossOrigin("*")
 	@PostMapping(value = "/chat/open")
 	public Map open(@RequestBody Map<String, Object> data) {
+		
 		System.out.println(data);
+		Integer num = (int) data.get("num");
+		if(num == 1) System.out.println("서울지점");
+		else System.out.println("경기지점");
 		return chatService.open();
 	}
 	
 	@CrossOrigin("*")
 	@PostMapping(value = "/chat/message")
 	public Map message(@RequestBody Map<String, Object> data, HttpServletRequest req) throws IOException {
-		
-		
 		//Utils.stream(chatService.tts(data), res.getOutputStream());
 		return chatService.message(data, req);
 	}

@@ -1,24 +1,23 @@
-import * as React from 'react';
-import { useHistory } from "react-router-dom";
 import Button from '@mui/material/Button';
+import { useHistory } from "react-router-dom";
 
 const Main = () => {
 
     const history = useHistory();
 
-    const handleClick = (num) => {
-        console.log(num);
+    //함수
+    const selectStore = (num) => {
         history.push({
-          pathname: "/chat",
-          props: { num:num }
-      });
+            pathname: "/xchat",
+            props: { num:num }
+        });
     };
 
     return (
-        <div className='main'>
-            <h1 style={{ fontSize: '8em' }}>Ginie Pizza</h1>
-            <Button color="success" size="large" variant="contained" onClick={()=>handleClick(1)}>1호점으로 가기</Button>
-            <Button color="success" size="large" variant="contained" onClick={()=>handleClick(2)}>2호점으로 가기</Button>
+        <div className="main">
+            <h1 style={{fontSize:'8em'}}>Genie Pizza</h1>
+            <Button variant="contained" onClick={()=>selectStore(1)}>서울지점</Button>
+            <Button variant="contained" onClick={()=>selectStore(2)}>경기지점</Button>
         </div>
     );
 };
