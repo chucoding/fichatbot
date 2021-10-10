@@ -1,6 +1,8 @@
 package com.chucoding.fichatbot.controller;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chucoding.fichatbot.service.ChatService;
-import com.chucoding.fichatbot.utils.Utils;
 
 @RestController
 public class ChatController {
@@ -21,12 +22,29 @@ public class ChatController {
 		
 	@CrossOrigin("*")
 	@PostMapping(value = "/chat/open")
-	public Map open(@RequestBody Map<String, Object> data) {
+	public Map<String, Object> open(@RequestBody Map<String, Object> data) {
 		
 		System.out.println(data);
-		Integer num = (int) data.get("num");
-		if(num == 1) System.out.println("서울지점");
-		else System.out.println("경기지점");
+		String store = (String) data.get("store");
+		
+		Map<String, Object> answer = new HashMap<String, Object>();
+		String message = "";
+		
+		if(store.equals("KT")) {
+			message = "어서오세요  KT 입니다. https://shop.kt.com/display/olhsPlan.do?plnDispNo=1017&cmpid=tf_shop_wire_180801-cpc-internettv_tvdirect-google-kt&gclid=Cj0KCQjw-4SLBhCVARIsACrhWLXGw6k0iQb-eOpdf8G1YcmMSHBYbIMGLm5gc0V8iCMfirYcFlp5AYkaApZcEALw_wcB";
+		}
+		else if(store.equals("LG")){
+			message = "어서오세요 LG 입니다.";
+		} else {
+			message = "잘못된 지점명 입니다.";
+		}
+		
+		answer.put("position", "left");
+		answer.put("type", "text");
+		answer.put("text", message);
+		answer.put("date", new Date());
+		
+		//return answer;
 		return chatService.open();
 	}
 	

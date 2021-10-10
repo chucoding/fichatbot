@@ -58,7 +58,7 @@ public class ChatDao {
                 InputStream is = con.getInputStream();
                 byte[] buffer = new byte[is.available()];
                 int byteRead = is.read(buffer);
-                responBody = new String(buffer);
+                responBody = new String(buffer, 0, byteRead, "UTF-8");
  
                 System.out.println("[responseCode] " + responseCode);
                 System.out.println("[responBody]");
@@ -113,7 +113,7 @@ public class ChatDao {
                 InputStream is = con.getInputStream();
                 byte[] buffer = new byte[is.available()];
                 int byteRead = is.read(buffer);
-                responBody = new String(buffer);
+                responBody = new String(buffer, 0, byteRead, "UTF-8");
  
                 System.out.println("[responseCode] " + responseCode);
                 System.out.println("[responBody]");

@@ -6,18 +6,18 @@ const Main = () => {
     const history = useHistory();
 
     //함수
-    const selectStore = (num) => {
+    const selectStore = (store) => {
         history.push({
             pathname: "/xchat",
-            props: { num:num }
+            props: { store:store }
         });
     };
 
     return (
         <div className="main">
             <h1 style={{fontSize:'8em'}}>Genie Pizza</h1>
-            <Button variant="contained" onClick={()=>selectStore(1)}>서울지점</Button>
-            <Button variant="contained" onClick={()=>selectStore(2)}>경기지점</Button>
+            <Button variant="contained" onClick={()=>selectStore("KT")}>KT</Button>
+            <Button variant="contained" onClick={()=>selectStore("LG")}>LG</Button>
         </div>
     );
 };

@@ -38,16 +38,17 @@ const Xchat = ({location}) => {
             position: 'right',
             type:'text',
             text:question,
-            date:new Date()
+            date:new Date(),
         };
 
          setMessages([...messages, answer]); //질문
-         const url = `http://localhost:8089/fichatbot/chat/message`;
+         const url = `http://localhost:8080/fichatbot/chat/message`;
          fetch(url, {method:"POST", body: JSON.stringify({question:answer, uuid:uuid}), headers:{"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"} })
              .then((res) => res.json())
              .then((data) => {
                  console.log(data);
                  tts(data.ttsUrl);
+
                  setMessages(messages => [...messages, data]); //답변
              }).catch(() => {
                  console.log("에러발생");
@@ -56,14 +57,13 @@ const Xchat = ({location}) => {
  
      const openChat = () => {
 
-        const storeNum = location.props && location.props.num;
+        const store = location.props && location.props.store;
 
-        console.log(location.props);
-         const url = `http://localhost:8089/fichatbot/chat/open`;
-         fetch(url, {method:"POST", body:JSON.stringify({num:storeNum}), headers:{"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"}})
+         const url = `http://localhost:8080/fichatbot/chat/open`;
+         fetch(url, {method:"POST", body:JSON.stringify({store:store}), headers:{"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"}})
              .then((res) => res.json())
              .then((data) => {
-                 console.log(data.uuid);
+                 console.log(data);
                  setUuid(data.uuid);
                  setMessages(messages => [...messages, data]);
              }).catch(()=>{
