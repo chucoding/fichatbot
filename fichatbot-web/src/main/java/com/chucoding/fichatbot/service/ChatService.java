@@ -80,7 +80,7 @@ public class ChatService {
 			
 			res.put("id", "chatbot");
 			res.put("uuid",uuid);
-			res.put("text", text);
+			res.put("text", text.replace("<br>", ""));
 			res.put("createdAt", new Date());
 			res.put("user", submap);
 			res.put("ttsUrl", chatDao.tts(folderName,text));
@@ -94,6 +94,12 @@ public class ChatService {
 		}
 
 		return res;
+	}
+	
+	/* html escape */
+	private String removeTags(String text) {
+		//return text.replace("<br>", "");
+		return text.replaceAll("", text);
 	}
 
 }
