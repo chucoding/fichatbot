@@ -10,7 +10,6 @@ import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
 
 import { MessageList } from 'react-chat-elements'
-import { Input } from 'react-chat-elements'
 
 import Vocal from '@untemps/react-vocal'
 
@@ -29,7 +28,7 @@ const VChat = ({ location }) => {
 	}
 
 	const _onVocalResult = (result) => {
-		setQuestion(result)
+        setQuestion(result);
 	}
 
     const tts = (url) => {
@@ -40,19 +39,21 @@ const VChat = ({ location }) => {
     }
 
     const getAnswer = () => {
-
+        console.log(question);
+        //inputRef.getInstance().clear();
         const answer = {
             position: 'right',
             type:'text',
             text:question,
             date:new Date()
         };
-
+        
         setMessages([...messages, answer]); //질문
         const url = `http://localhost:8080/fichatbot/chat/message`;
         fetch(url, {method:"POST", body: JSON.stringify({question:answer, uuid:uuid}), headers:{"Access-Control-Allow-Origin":"*", "Content-Type":"application/json"} })
             .then((res) => res.json())
             .then((data) => {
+                setQuestion('');
                 setMessages(messages => [...messages, data]); //답변
                 tts(data.ttsUrl);
             }).catch(() => {
@@ -74,7 +75,12 @@ const VChat = ({ location }) => {
     };
 
     useEffect(openChat,[]);
-    useEffect(tts, [speech])
+    useEffect(tts, [speech]);
+    useEffect(()=> {
+        if(question != "") {
+            getAnswer();
+        }
+    }, [question]);
 
     //3. html 코드 렌더링
     return (
@@ -88,33 +94,17 @@ const VChat = ({ location }) => {
                         dataSource={messages}
                     />
                 </CardContent>
-                <CardContent>
-                <div>
-		</div>
-                    <Input
-                        placeholder="메시지를 입력하시오"
-                        multiline={false}
-                        onChange={(e)=>setQuestion(e.target.value)}
-                        defaultValue={question}
-                        onKeyDown={(e)=>{
-                            if(e.key === 'Enter') {
-                                getAnswer();
-                                e.target.value = "";
-                            }
-                        }}
-                        leftButtons={
-                            <Vocal
-                                onStart={_onVocalStart}
-                                onResult={_onVocalResult}
-                                lang="ko-KR"
-                            />
-                        }
-                        rightButtons={
-                            <div onClick={()=>getAnswer()}>
-                                <IconButton aria-label="전송" ><SendIcon/></IconButton>
-                            </div>
-                        }
+                <CardContent className="rce-container-input">
+                    <Vocal
+                        onStart={_onVocalStart}
+                        onResult={_onVocalResult}
+                        lang="ko-KR"
+                        style={{ display:'flex', flexDirection:'row', margin:'5px' }}
                     />
+                    <input class="rce-input" placeholder="메시지를 입력하시오"  onChange={(e)=>setQuestion(e.target.value)} onKeyDown={(e)=> {if(e.key === 'Enter') { getAnswer() }}} value={question} />
+                    <div class="rce-input-buttons" onClick={()=>{getAnswer()}}>
+                        <IconButton aria-label="전송" ><SendIcon/></IconButton>
+                    </div>
                 </CardContent>
             </Card>
         </div>
