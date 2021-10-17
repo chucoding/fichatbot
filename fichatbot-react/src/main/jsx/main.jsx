@@ -8,7 +8,7 @@ const Main = () => {
     //함수
     const selectStore = (store) => {
         history.push({
-            pathname: "/xchat",
+            pathname: "/vchat",
             props: { store:store }
         });
     };

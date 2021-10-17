@@ -17,11 +17,11 @@ import Vocal from '@untemps/react-vocal'
 const VChat = ({ location }) => {
 
     //변수 선언
-    const [messages, setMessages] = useState([]);
-    const [uuid, setUuid] = useState("");
+    const [messages, setMessages] = useState([]); // 메시지 목록
+    const [uuid, setUuid] = useState("");         // ETRI 오픈챗 uuid
     const [storeNum, setStoreNum] = useState(location.props && location.props.num);
-    const [question, setQuestion] = useState("");
-    const [speech, setSpeech] = useState("");
+    const [question, setQuestion] = useState("");  // STT(Speech To Text)
+    const [speech, setSpeech] = useState("");       // 질문
 
     //함수 선언
 	const _onVocalStart = () => {
@@ -69,13 +69,14 @@ const VChat = ({ location }) => {
                 setUuid(data.uuid);
                 setMessages(messages => [...messages, data]);
             }).catch(()=>{
-                console.log("에러발생");
+                alert("에러발생 : 서버 켜있는지 확인!!");
             })
     };
 
     useEffect(openChat,[]);
     useEffect(tts, [speech])
 
+    //3. html 코드 렌더링
     return (
         <div>
             <Card sx={{height:'96vh', marginTop:'1vh'}}>
@@ -95,6 +96,12 @@ const VChat = ({ location }) => {
                         multiline={false}
                         onChange={(e)=>setQuestion(e.target.value)}
                         defaultValue={question}
+                        onKeyDown={(e)=>{
+                            if(e.key === 'Enter') {
+                                getAnswer();
+                                e.target.value = "";
+                            }
+                        }}
                         leftButtons={
                             <Vocal
                                 onStart={_onVocalStart}
