@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.chucoding.fichatbot.service.NlpService;
 import com.chucoding.fichatbot.service.ChatService;
 
 @RestController
 public class ChatController {
 	
-	@Autowired ChatService chatService;	
+	@Autowired NlpService nlpService;
+	@Autowired ChatService chatService;
 		
 	@CrossOrigin("*")
 	@PostMapping(value = "/chat/open")
@@ -33,13 +35,13 @@ public class ChatController {
 		answer.put("date", new Date());
 		
 		//return answer;
-		return chatService.open();
+		return nlpService.open();
 	}
 	
 	@CrossOrigin("*")
 	@PostMapping(value = "/chat/message")
 	public Map message(@RequestBody Map<String, Object> data, HttpServletRequest req) throws IOException {
 		//Utils.stream(chatService.tts(data), res.getOutputStream());
-		return chatService.message(data, req);
+		return nlpService.message(data, req);
 	}
 }
