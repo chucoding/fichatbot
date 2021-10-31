@@ -29,6 +29,7 @@ const VChat = ({ location }) => {
 
 	const _onVocalResult = (result) => {
         setQuestion(result);
+        getAnswer(result);
 	}
 
     const tts = (url) => {
@@ -38,13 +39,11 @@ const VChat = ({ location }) => {
         audio.play();
     }
 
-    const getAnswer = () => {
-        console.log(question);
-        //inputRef.getInstance().clear();
+    const getAnswer = (result) => {
         const answer = {
             position: 'right',
             type:'text',
-            text:question,
+            text:result ? result : question,
             date:new Date()
         };
         
@@ -76,11 +75,6 @@ const VChat = ({ location }) => {
 
     useEffect(openChat,[]);
     useEffect(tts, [speech]);
-    useEffect(()=> {
-        if(question != "") {
-            getAnswer();
-        }
-    }, [question]);
 
     //3. html 코드 렌더링
     return (
